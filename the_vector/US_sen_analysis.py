@@ -46,10 +46,15 @@ def least_similar(senA, voting_dict):
     return lst_sen
 
 def find_average_similarity(senA, sen_set, voting_dict):
-    accum = 0
-    for senB in sen_set:
-        accum += policy_compare(senA, senB, voting_dict)
-    return (accum / len(sen_set))
+    voting_matrix = tuple(voting_dict[sen] for sen in sen_set)
+    voting_width = len(voting_dict[senA])
+    avg_sen_set = [0] * voting_width
+    for i in range(voting_width):
+        for j in range(len(sen_set)):
+            avg_sen_set[i] += voting_matrix[j][i]
+        avg_sen_set[i] /= len(sen_set)
+    return sum([a*b for (a,b) in zip(voting_dict[senA], avg_sen_set)])
+
 
 def most_similar_to_set(sen_set, voting_dict):
     sim_sen, best_avg = ['Null', 0]
