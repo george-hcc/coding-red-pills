@@ -12,7 +12,7 @@ def getitem(v,k):
     0
     """
     assert k in v.D
-    pass
+    return v.f.get(k, 0)
 
 def setitem(v,k,val):
     """
@@ -32,6 +32,7 @@ def setitem(v,k,val):
     0
     """
     assert k in v.D
+    v.f[k] = val
     pass
 
 def equal(u,v):
@@ -105,7 +106,10 @@ def add(u,v):
     True
     """
     assert u.D == v.D
-    pass
+    for key in u.D:
+        if u[key] != v[key]:
+            return False
+    return True
 
 def dot(u,v):
     """
@@ -139,7 +143,7 @@ def dot(u,v):
     12
     """
     assert u.D == v.D
-    pass
+    return sum([u[k]*v[k] for k in u.D])
 
 def scalar_mul(v, alpha):
     """
@@ -159,7 +163,10 @@ def scalar_mul(v, alpha):
     >>> u == Vec({'x','y','z','w'},{'x':1,'y':2,'z':3,'w':4})
     True
     """
-    pass
+    if alpha == 0:
+        return Vec(v.D, {})
+    else:
+        return Vec(v.D, {k:alpha*v[k] for k in v.D})
 
 def neg(v):
     """
@@ -176,7 +183,7 @@ def neg(v):
     >>> -Vec({'a','b','c'}, {'a':1}) == Vec({'a','b','c'}, {'a':-1})
     True
     """
-    pass
+    return (-1)*v
 
 ###############################################################################################################################
 
@@ -238,7 +245,7 @@ class Vec:
         numdec = 3
         wd = dict([(k,(1+max(len(str(k)), len('{0:.{1}G}'.format(v[k], numdec))))) if isinstance(v[k], int) or isinstance(v[k], float) else (k,(1+max(len(str(k)), len(str(v[k]))))) for k in D_list])
         s1 = ''.join(['{0:>{1}}'.format(str(k),wd[k]) for k in D_list])
-        s2 = ''.join(['{0:>{1}.{2}G}'.format(v[k],wd[k],numdec) if isinstance(v[k], int) or isinstance(v[k], float) else '{0:>{1}}'.format(v[k], wd[k]) for k in D_list])
+        s2 = ''.join(['{0:>{1}.{2}G}'.format(v[k],wd[k],numdec) if isinstance(v[k], int) or isinstance(v[k], float) else '{0:>{1}}'.format(str(v[k]), wd[k]) for k in D_list])
         return "\n" + s1 + "\n" + '-'*sum(wd.values()) +"\n" + s2
 
     def __hash__(self):

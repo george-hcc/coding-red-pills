@@ -1,1 +1,1 @@
-../../the_vector/vec.py
+../../the_vector/resources/vec.py
