@@ -40,7 +40,7 @@ def equal(A, B):
     """
     assert A.D == B.D
     for key in set(A.f) | set(B.f):
-        if A[k] != B[k]:
+        if A[key] != B[key]:
             return False
     return True
 
@@ -62,6 +62,7 @@ def setitem(M, k, val):
     True
     """
     assert k[0] in M.D[0] and k[1] in M.D[1]
+    if val == 0: pass
     M.f[k] = val
     pass
 

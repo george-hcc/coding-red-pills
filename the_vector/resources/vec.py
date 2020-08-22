@@ -32,6 +32,7 @@ def setitem(v,k,val):
     0
     """
     assert k in v.D
+    if val == 0: pass
     v.f[k] = val
     pass
 
@@ -69,7 +70,10 @@ def equal(u,v):
     False
     """
     assert u.D == v.D
-    pass
+    for key in u.D:
+        if u[key] != v[key]:
+            return False
+    return True
 
 def add(u,v):
     """
@@ -106,10 +110,10 @@ def add(u,v):
     True
     """
     assert u.D == v.D
+    result = Vec(u.D, {})
     for key in u.D:
-        if u[key] != v[key]:
-            return False
-    return True
+        result[key] = u[key] + v[key]
+    return result
 
 def dot(u,v):
     """
@@ -265,3 +269,6 @@ class Vec:
 
     def __iter__(self):
         raise TypeError('%r object is not iterable' % self.__class__.__name__)
+
+    def __len__(self):
+        return len(self.D)

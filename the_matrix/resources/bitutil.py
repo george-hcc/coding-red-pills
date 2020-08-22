@@ -9,8 +9,8 @@ Updated by Nick Gaya, Spring 2013
 Requires: fields matutil
 """
 
-from GF2 import zero, one
-import mat
+from .GF2 import zero, one
+import resources.mat as mat
 import random
 
 def str2bits(inp):
