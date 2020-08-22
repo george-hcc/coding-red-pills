@@ -13,10 +13,7 @@ def getitem(M, k):
     0
     """
     assert k[0] in M.D[0] and k[1] in M.D[1]
-    if k in M.f:
-        return(M.f[k])
-    else:
-        return 0
+    return M.f.get(k, 0)
 
 def equal(A, B):
     """
@@ -42,7 +39,10 @@ def equal(A, B):
     True
     """
     assert A.D == B.D
-    pass
+    for key in set(A.f) | set(B.f):
+        if A[k] != B[k]:
+            return False
+    return True
 
 def setitem(M, k, val):
     """
@@ -62,6 +62,7 @@ def setitem(M, k, val):
     True
     """
     assert k[0] in M.D[0] and k[1] in M.D[1]
+    M.f[k] = val
     pass
 
 def add(A, B):
@@ -90,7 +91,7 @@ def add(A, B):
     True
     """
     assert A.D == B.D
-    pass
+    return Mat(A.D, {k:A[k] + B[k] for k in set(A.f) | set(B.f)})
 
 def scalar_mul(M, x):
     """
@@ -104,7 +105,10 @@ def scalar_mul(M, x):
     >>> 0.25*M == Mat(({1,3,5}, {2,4}), {(1,2):1.0, (5,4):0.5, (3,4):0.75})
     True
     """
-    pass
+    if x == 0:
+        return Mat(A.D, {})
+    else:
+        return Mat(A.D, {k:x*M[k] for k in A.f})
 
 def transpose(M):
     """
@@ -118,7 +122,8 @@ def transpose(M):
     >>> M.transpose() == Mt
     True
     """
-    pass
+    assert len(A.D) == 2
+    return Mat((D[1], D[0]), {(k[1],k[0]):M[k] for k in A.f})
 
 def vector_matrix_mul(v, M):
     """
@@ -145,7 +150,11 @@ def vector_matrix_mul(v, M):
     True
     """
     assert M.D[0] == v.D
-    pass
+    result = Vec(M.D[1], {})
+    for mat_key in M.D[1]:
+        dot = sum([M[(k, mat_key)]*v[k] for k in v.D])
+        result[mat_key] = dot
+    return result
 
 def matrix_vector_mul(M, v):
     """
@@ -172,7 +181,11 @@ def matrix_vector_mul(M, v):
     True
     """
     assert M.D[1] == v.D
-    pass
+    result = Vec(M.D[0], {})
+    for mat_key in M.D[0]:
+        dot = sum([M[(mat_key, k)]*v[k] for k in v.D])
+        result[mat_key] = dot
+    return result
 
 def matrix_matrix_mul(A, B):
     """
@@ -201,7 +214,12 @@ def matrix_matrix_mul(A, B):
     True
     """
     assert A.D[1] == B.D[0]
-    pass
+    commonD = A.D[1]
+    result = Mat((A.D[0], B.D[1]), {})
+    for i in A.D[0]:
+        for j in B.D[1]:
+            result[(i, j)] = sum([A[(i,k)]*B[(k,j)] for k in commonD])
+    return result
 
 ################################################################################
 
