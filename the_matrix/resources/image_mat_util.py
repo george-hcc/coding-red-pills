@@ -11,7 +11,7 @@
     matrix represent the boundary of the pixel region
     """
 
-import mat
+from . import mat
 import png
 import numbers
 import collections
