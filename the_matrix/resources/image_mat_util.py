@@ -12,7 +12,7 @@
     """
 
 from . import mat
-import png
+from . import png
 import numbers
 import collections
 import webbrowser
