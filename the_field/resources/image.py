@@ -13,7 +13,7 @@ and display them with a web browser.
 # To do: check types of arguments, check that image has no alpha channel
 # Note that right now, we ignore the alpha channel, but allow it. - @dbp
 
-import png
+import .png
 import numbers
 import collections
 
